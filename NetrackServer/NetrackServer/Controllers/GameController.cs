@@ -40,6 +40,7 @@ namespace NetrackServer.Controllers
             // Parse location argument
             Point location = parseLocation(loc);
             player.Location = location;
+            return Ok();
         }
 
         private void populateTestData() {
