@@ -1,3 +1,16 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://TileMap.tscn" type="PackedScene" id=2]
 
 [node name="Main" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 85, 173 )
+z_index = 1
+input_steer_left = "ui_left"
+input_steer_right = "ui_right"
+input_accelerate = "ui_up"
+input_brake = "ui_down"
+
+[node name="TileMap" parent="." instance=ExtResource( 2 )]
