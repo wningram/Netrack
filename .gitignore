@@ -1,3 +1,4 @@
 db.lock
 bin/
-NetrackServer/.vs/
+obj/
+.vs/
