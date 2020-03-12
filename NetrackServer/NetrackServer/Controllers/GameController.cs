@@ -32,6 +32,7 @@ namespace NetrackServer.Controllers
                 "player 1", "player2"
             });
             resp["players"] = players;
+            resp["status"] = "Active";
             return Json(resp);
         }
 
@@ -51,8 +52,13 @@ namespace NetrackServer.Controllers
             Player player = _players.Where(p => p.Id == playerId).First();
             // Parse location argument
             Point location = parseLocation(loc);
-            player.Location = location;
-            return Ok();
+            if (player != null) {
+                player.Location = location;
+                return Ok();
+            } else {
+                // REturn 404 error if player is not found
+                return NotFound();
+            }
         }
 
         private void populateTestData() {
