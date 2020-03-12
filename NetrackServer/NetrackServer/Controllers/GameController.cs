@@ -24,6 +24,18 @@ namespace NetrackServer.Controllers
         }
 
         [HttpGet]
+        public IActionResult Status() {
+            Dictionary<string, object> resp = new Dictionary<string, object>();
+            // HACK: Need to implement actual logic
+            List<string> players = new List<string>();
+            players.AddRange(new string[] {
+                "player 1", "player2"
+            });
+            resp["players"] = players;
+            return Json(resp);
+        }
+
+        [HttpGet]
         public IActionResult PlayerLocations([FromQuery] int playerId=-1) {
             if (playerId < 1) {
                 // Return the location of the player requested
