@@ -1,1 +1,5 @@
 db.lock
+bin/
+obj/
+.vs/
+NetrackServer/NetrackServer/bin
