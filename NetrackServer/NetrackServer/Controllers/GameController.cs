@@ -12,11 +12,15 @@ namespace NetrackServer.Controllers
         private List<Player> _players;
         private Map _gameMap;
         
-        public GameController() {
+        public GameController(bool testMode=true) {
             _players = new List<Player>();
             _gameMap = new Map(); // TODO: In teh future the parameter for this should be set using the app config file
-            // XXX: For testing purposed
-            populateTestData();
+            if (testMode)
+                populateTestData();
+        }
+
+        public List<Player> Players {
+            get => _players;
         }
 
         public IActionResult Index() {
@@ -38,12 +42,24 @@ namespace NetrackServer.Controllers
 
         [HttpGet]
         public IActionResult PlayerLocations([FromQuery] int playerId=-1) {
-            if (playerId < 1) {
+            Dictionary<string, Point> resp = new Dictionary<string, Point>();
+            if (playerId > 0) {
                 // Return the location of the player requested
-                Player player = _players.Where(p => p.Id == playerId).First();
-                return Json($"{player.Id}: {player.Location.ToString()}"); // TODO: Test to see what result looks like
+                Player player = _players.Where(p => p.Id == playerId).FirstOrDefault();
+                if (player != null) {
+                    // If player with playerId is foudn, return its location as JSON data
+                    resp[player.Id.ToString()] = player.Location;
+                    return Json(resp);
+                } else {
+                    // If no player with playerId is found, return 404 status.
+                    return NotFound($"Could not find player with Id: {playerId}");
+                }
             } else {
-                throw new NotImplementedException();
+                // Return all players
+                foreach (Player p in _players) {
+                    resp[p.Id.ToString()] = p.Location;
+                }
+                return Json(resp);
             }
         }
 
@@ -57,11 +73,12 @@ namespace NetrackServer.Controllers
                 return Ok();
             } else {
                 // REturn 404 error if player is not found
-                return NotFound();
+                return NotFound($"No player was found with Id: {playerId}");
             }
         }
 
         private void populateTestData() {
+            Player.PlayerHistoryCount = 0;
             _players.AddRange(new Player[] {
                 new Player() {
                     Location=new Point(10, 20)
