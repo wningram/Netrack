@@ -30,12 +30,7 @@ namespace NetrackServer.Controllers
         [HttpGet]
         public IActionResult Status() {
             Dictionary<string, object> resp = new Dictionary<string, object>();
-            // HACK: Need to implement actual logic
-            List<string> players = new List<string>();
-            players.AddRange(new string[] {
-                "player 1", "player2"
-            });
-            resp["players"] = players;
+            resp["players"] = _players.Select(p => p.Id).ToArray();
             resp["status"] = "Active";
             return Json(resp);
         }

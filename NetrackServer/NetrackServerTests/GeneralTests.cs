@@ -48,7 +48,7 @@ namespace NetrackServerTests {
             JsonResult result = gc.Status() as JsonResult;
 
             Dictionary<string, object> resultValue = result.Value as Dictionary<string, object>;
-            Assert.AreEqual(3, ((List<string>)resultValue["players"]).Count);
+            Assert.AreEqual(3, ((int[])resultValue["players"]).Length);
         }
     }
 }
