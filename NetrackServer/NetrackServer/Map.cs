@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using System.Drawing;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace NetrackServer {
     public class Map {
@@ -35,8 +37,15 @@ namespace NetrackServer {
         /// Loads map tiles from a file into the <see cref="_tiles"/> variable.
         /// </summary>
         /// <param name="filePath">The path of the file to read.</param>
-        public void LoadTileMap(string filePath) { 
-            throw new NotImplementedException();
+        public void LoadTileMap(string filePath) {
+            FileInfo file = new FileInfo(filePath);
+            // Check that file exists
+            if (file.Exists) {
+                JObject jsonObj = JObject.Parse(File.ReadAllText(filePath));
+                
+            } else {
+                throw new FileNotFoundException();
+            }
         }
     }
 }
