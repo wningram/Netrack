@@ -43,9 +43,21 @@ namespace NetrackServer {
             LoadTileMap(mapFIle);
         }
 
+        /// <summary>
+        /// A list of tiles placed on this map.
+        /// </summary>
         public List<MapTile> Tiles { get=>this._tiles; }
+        /// <summary>
+        /// The name of this map.
+        /// </summary>
         public string MapName { get; set; }
+        /// <summary>
+        /// The length of this map in the X direction.
+        /// </summary>
         public int MaxX { get; protected set; }
+        /// <summary>
+        /// The length of this map in the Y direction.
+        /// </summary>
         public int MaxY { get; protected set; }
 
         /// <summary>
@@ -57,6 +69,11 @@ namespace NetrackServer {
             return _tiles.Where(t => t.Location == loc).First();
         }
 
+        /// <summary>
+        /// Creates a template Map file to be modified and, later, loaded. 
+        /// This function is a tool for Map developers and has no other function within this app.
+        /// </summary>
+        /// <param name="filePath">The name of the file to create.</param>
         public static void CreateTileMapFileTemplate(string filePath) {
             Console.WriteLine($"Creating template file at: {filePath}");
             using (JsonTextWriter jWriter = new JsonTextWriter(new StreamWriter(filePath))) {
@@ -162,10 +179,12 @@ namespace NetrackServer {
             } else {
                 throw new FileNotFoundException($"Could not load TileMap from: {filePath}");
             }
-
-            //throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Determines the <see cref="MaxX"/> and <see cref="MaxY"/> values based on the 
+        /// positions of tiles on this map.
+        /// </summary>
         public void CalculateMaxBounds() {
             int xBound, yBound;
 
