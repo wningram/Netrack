@@ -1,4 +1,6 @@
-﻿using System;
+﻿// TODO: Need actions for initiating/managing game session
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -75,6 +77,26 @@ namespace NetrackServer.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult MapDetails() {
+            Dictionary<string, object> result;
+
+            // Return an error if there's no map to return
+            if (GameMap == null) {
+                return NotFound("There is no map currently registered.");
+            }
+
+            result = new Dictionary<string, object>() {
+                {"MapName", GameMap.MapName },
+                {"MaxX", GameMap.MaxX },
+                {"MaxY", GameMap.MaxY }
+            };
+            return Json(result);
+        }
+
+        /// <summary>
+        /// Function is for testing only. Initializes server state with test data.
+        /// </summary>
         private void populateTestData() {
             Player.PlayerHistoryCount = 0;
             _players.AddRange(new Player[] {
