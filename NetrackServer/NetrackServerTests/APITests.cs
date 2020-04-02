@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace NetrackServerTests {
     [TestClass]
-    public class GeneralTests {
+    public class APITests {
         [TestMethod]
         public void GetPlayerLocations_ReturnsAllPlayerLocations_WhenArgIsLessThanOne() {
             GameController gc = new GameController(true);
