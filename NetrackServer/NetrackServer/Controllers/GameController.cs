@@ -1,4 +1,6 @@
-﻿using System;
+﻿// TODO: Need actions for initiating/managing game session
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,6 +24,8 @@ namespace NetrackServer.Controllers
         public List<Player> Players {
             get => _players;
         }
+
+        public Map GameMap { get => _gameMap; }
 
         public IActionResult Index() {
             return View();
@@ -62,7 +66,8 @@ namespace NetrackServer.Controllers
         public IActionResult PlayerLocations([FromBody] string loc, [FromBody] int playerId) {
             Player player = _players.Where(p => p.Id == playerId).First();
             // Parse location argument
-            Point location = parseLocation(loc);
+            //Point location = parseLocation(loc);
+            Point location = Common.DeserializePoint(loc);
             if (player != null) {
                 player.Location = location;
                 return Ok();
@@ -72,6 +77,26 @@ namespace NetrackServer.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult MapDetails() {
+            Dictionary<string, object> result;
+
+            // Return an error if there's no map to return
+            if (GameMap == null) {
+                return NotFound("There is no map currently registered.");
+            }
+
+            result = new Dictionary<string, object>() {
+                {"MapName", GameMap.MapName },
+                {"MaxX", GameMap.MaxX },
+                {"MaxY", GameMap.MaxY }
+            };
+            return Json(result);
+        }
+
+        /// <summary>
+        /// Function is for testing only. Initializes server state with test data.
+        /// </summary>
         private void populateTestData() {
             Player.PlayerHistoryCount = 0;
             _players.AddRange(new Player[] {
@@ -85,18 +110,19 @@ namespace NetrackServer.Controllers
                     Location=new Point(5, 20)
                 },
             });
-        }
 
-        private Point parseLocation(string loc) {
-            int x, y;
-            string[] data;
-            // Remove leading/trailing spaces
-            loc.Trim();
-            // Get values on either side of the comma
-            data = loc.Split(",");
-            x = int.Parse(data[0]);
-            y = int.Parse(data[1]);
-            return new Point(x, y);
+            // Populate map data
+            this._gameMap = new Map();
+            this._gameMap.MapName = "Untitled Map";
+            this._gameMap.Tiles.Add(new Map.MapTile() {
+                Location = new Point(35, 25),
+                Type = Map.TileTypes.EMPTY
+            });
+            this._gameMap.Tiles.Add(new Map.MapTile() {
+                Location = new Point(100, 15),
+                Type = Map.TileTypes.ASPHALT
+            });
+            this._gameMap.CalculateMaxBounds();
         }
     }
 }

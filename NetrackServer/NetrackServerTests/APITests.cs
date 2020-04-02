@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace NetrackServerTests {
     [TestClass]
-    public class GeneralTests {
+    public class APITests {
         [TestMethod]
         public void GetPlayerLocations_ReturnsAllPlayerLocations_WhenArgIsLessThanOne() {
             GameController gc = new GameController(true);
@@ -49,6 +49,21 @@ namespace NetrackServerTests {
 
             Dictionary<string, object> resultValue = result.Value as Dictionary<string, object>;
             Assert.AreEqual(3, ((int[])resultValue["players"]).Length);
+        }
+
+        [TestMethod]
+        public void Test_MapDetails() {
+            // Setup
+            GameController gc = new GameController(true);
+
+            // Run test
+            JsonResult result = gc.MapDetails() as JsonResult;
+            Dictionary<string, object> resultValue = result.Value as Dictionary<string, object>;
+
+            // Assertions
+            Assert.AreEqual("Untitled Map", resultValue["MapName"]);
+            Assert.AreEqual(100, resultValue["MaxX"]);
+            Assert.AreEqual(25, resultValue["MaxY"]);
         }
     }
 }
