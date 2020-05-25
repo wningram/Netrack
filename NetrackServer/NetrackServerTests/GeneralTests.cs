@@ -33,8 +33,12 @@ namespace NetrackServerTests {
         [TestMethod]
         public void PostPlayerLocations_UpdatesPayer() {
             GameController gc = new GameController(true);
+            GameController.PlayerLocation loc = new GameController.PlayerLocation() {
+                Location = "100, 100",
+                PlayerId = 1
+            };
 
-            gc.PlayerLocations("100, 100", 1);
+            gc.PlayerLocations(loc, 0);
 
             Player firstPlayer = gc.Players.Find(p => p.Id == 1);
             Assert.AreEqual(100, firstPlayer.Location.X);
