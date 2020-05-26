@@ -22,6 +22,12 @@ namespace NetrackServer {
             LoadTileMap(mapFIle);
         }
 
+        public Map(string mapFIle, string mapName) : this(mapFIle) {
+            MapName = mapName;
+        }
+
+        public string MapName { get; protected set; }
+
         /// <summary>
         /// Gets the map tile at the specified location.
         /// </summary>
@@ -36,6 +42,7 @@ namespace NetrackServer {
         /// </summary>
         /// <param name="filePath">The path of the file to read.</param>
         public void LoadTileMap(string filePath) { 
+            // TODO: Implement ability to load tilemaps from file
             throw new NotImplementedException();
         }
     }

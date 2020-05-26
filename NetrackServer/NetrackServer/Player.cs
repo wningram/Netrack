@@ -15,6 +15,11 @@ namespace NetrackServer {
             this.Id = Player.PlayerHistoryCount;
         }
 
+        public Player(int id, Point location) {
+            Id = id;
+            Location = location;
+        }
+
         public int Id { get; protected set; }
         public Point Location { get; set; }
     }
