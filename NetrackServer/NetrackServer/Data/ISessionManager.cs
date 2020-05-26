@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace NetrackServer.Data {
     public interface ISessionManager {
-        List<Player> GetPlayers(int sessionId);
-        Map GetMap(int sessionId);
-        void SetPlayer(Player player, int sessionId);
+        public List<Player> GetPlayers(int sessionId);
+        public Map GetMap(int sessionId);
+        public void SetPlayer(Player player, int sessionId);
     }
 }
